@@ -1,0 +1,163 @@
+
+float x1,y1,x2,y2,x3,y3;
+float sx,sy,rad,w,h;
+int c1,c2,c,score,level=1;
+void setup(){
+ size(displayWidth,displayHeight);
+// background(#46F20F);
+
+
+   w=30;
+   h=100;
+   x1=20;
+   y1=height*0.5;
+   x2=width-x1-30;
+   y2=height*0.5;
+   x3=width*0.5;
+   y3=height*0.5;
+   rad=40;
+   sx=2;
+   sy=2;
+   c1=0;
+   c2=0;
+   score=2;
+   if(level>1){
+   sx=2*level+2;
+   sy=2*level+2;
+   }
+}
+void draw(){
+
+    initialize();
+    update();
+    score();
+    move();
+    player();
+    playerControls();
+    collapse();
+    win();
+    println("sx:"+sx+"sy:"+sy+"h:"+h);
+}
+      void initialize(){
+      fill(0);
+      rect(0,0,width,height);
+      fill(#FF0808);
+      ellipse(x3,y3,rad,rad);   
+     
+   
+      
+       }
+      
+      void update(){
+      fill(#FF0808);
+      ellipse(x3,y3,rad,rad);
+      x3+=sx;
+      y3+=sy;
+      fill(#000AF5);
+      }
+      
+      
+      void move(){
+      if(x3<=rad/2 || (x3>=width-rad/2)){
+      sx*=-1;
+      if(x3<=rad/2){
+      c2++;
+      }
+      else{
+      c1++;
+      
+      }
+     }
+      if(y3>=height-rad/2||y3<=rad/2)
+       sy*=-1;
+      }
+      
+      
+      void player(){
+       fill(#0326FF);
+       rect(x1,y1,w,h);
+       fill(#FCFC00);
+       rect(x2,y2,w,h);
+      }
+      
+      
+      void playerControls(){     
+        if((mouseX>=0 && mouseX<=w) &&(mouseY>=0 && mouseY<=height))
+          if(mouseY<=height-h)
+          y1=mouseY;
+          else
+          y1=height-h;
+        if(mouseX>=width-w && mouseX<=width && mouseY>=0 && mouseY<=height)
+          if(mouseY<=height-h)
+           y2=mouseY; 
+           else
+           y2=height-h;
+       }
+      
+      
+      void collapse(){
+      if(x3-rad/2<=x1+w && x3-rad/2 >=x1+w/2 && y3-rad/2<=y1+h && y3+rad/2>=y1){
+      if(sx<0)
+        sx*=-1;
+      }
+      else if(x3+rad/2>=x2 && x3+rad/2<=x2+w/2  && y3-rad/2<=y2+h && y3+rad/2>=y2)
+      if(sx>0)
+      sx*=-1;
+     }
+     
+     
+     void score(){  
+      fill(#FF8103);
+      textSize(40);
+      text(c1,width*0.3,height*0.35,30);
+      text(c2,width*0.6,height*0.35,30); 
+      fill(#E3F5F5);
+      rect(width*0.6,height*0.8,180,60);
+      fill(#0A32F5);
+      text("level:"+level,width*0.76,height*0.85,30); 
+      }
+      
+      
+      void win(){
+        textSize(30);
+        textAlign(CENTER);
+        fill(#F50ACE);
+       if(score<=c1){
+       text("player 1 won the game",width*0.4,height*0.42); 
+        gameOver();
+       }
+       else if(score<=c2){
+       text("player 2 won the game",width*0.4,height*0.42);    
+        gameOver();      
+        }     
+      }
+      
+      
+        void gameOver(){        
+        fill(#4BFF00);
+        text("click to go next level",width*0.4,height*0.5); 
+        if(x3<=rad/2 || (x3>=width-rad/2))
+        x3=width*0.8;
+        else if(y3>=height-rad/2||y3<=rad/2)
+        y3=height*0.6;
+        sx=0;
+        sy=0;
+       if(mousePressed){
+         if(score<=c1 || score<=c2){
+           setup();      
+           level+=1;
+           h-=5;
+          }
+        } 
+    /*    rectMode(CENTER);
+      text("restart",width*0.4+10,height*0.6+10); 
+      fill(#F50ACE);
+      rect(width*0.4,height*0.6,150,75); 
+      */
+      }
+      
+      
+      void mousePressed(){    
+     //  if(mouseX>=width*0.4 && mouseY>=height*0.6 && mouseX<=width*0.4+100 && mouseY<=height*0.6+100) 
+     //   setup();
+      }
